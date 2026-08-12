@@ -1,0 +1,27 @@
+{
+  "info": {"name":"Nexus ERP CRM API","schema":"https://schema.getpostman.com/json/collection/v2.1.0/collection.json"},
+  "variable": [{"key":"baseUrl","value":"http://localhost:4000"},{"key":"token","value":""},{"key":"customerId","value":""},{"key":"productId","value":""},{"key":"challanId","value":""}],
+  "item": [
+    {"name":"Health","request":{"method":"GET","url":"{{baseUrl}}/health"}},
+    {"name":"Login Admin","request":{"method":"POST","header":[{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\"email\":\"admin@erp.local\",\"password\":\"Password123!\"}"},"url":"{{baseUrl}}/auth/login"}},
+    {"name":"Me","request":{"method":"GET","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":"{{baseUrl}}/auth/me"}},
+    {"name":"Customers","item":[
+      {"name":"List","request":{"method":"GET","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":"{{baseUrl}}/customers?search=&page=1&limit=20"}},
+      {"name":"Create","request":{"method":"POST","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\"customerName\":\"Acme Retail\",\"mobile\":\"9876543210\",\"email\":\"buyer@example.com\",\"businessName\":\"Acme Retail\",\"gstNumber\":\"29ABCDE1234F1Z5\",\"customerType\":\"RETAIL\",\"address\":\"Bengaluru\",\"status\":\"ACTIVE\",\"followUpDate\":\"2026-08-20\",\"notes\":\"Demo customer\"}"},"url":"{{baseUrl}}/customers"}},
+      {"name":"Follow-up","request":{"method":"POST","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\"note\":\"Call customer next week\",\"followUpDate\":\"2026-08-20\"}"},"url":"{{baseUrl}}/customers/{{customerId}}/followups"}}
+    ]},
+    {"name":"Products","item":[
+      {"name":"List","request":{"method":"GET","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":"{{baseUrl}}/products?limit=20"}},
+      {"name":"Create","request":{"method":"POST","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\"name\":\"Demo Product\",\"sku\":\"DEMO-001\",\"category\":\"General\",\"unitPrice\":100,\"currentStock\":50,\"minimumStock\":10,\"warehouseLocation\":\"WH-A\"}"},"url":"{{baseUrl}}/products"}},
+      {"name":"Stock IN","request":{"method":"POST","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\"quantity\":20,\"movementType\":\"IN\",\"reason\":\"Purchase receipt\"}"},"url":"{{baseUrl}}/products/{{productId}}/stock"}},
+      {"name":"Stock OUT","request":{"method":"POST","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\"quantity\":5,\"movementType\":\"OUT\",\"reason\":\"Manual issue\"}"},"url":"{{baseUrl}}/products/{{productId}}/stock"}},
+      {"name":"Movements","request":{"method":"GET","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":"{{baseUrl}}/products/{{productId}}/stock-movements"}}
+    ]},
+    {"name":"Challans","item":[
+      {"name":"Create Draft","request":{"method":"POST","header":[{"key":"Authorization","value":"Bearer {{token}}"},{"key":"Content-Type","value":"application/json"}],"body":{"mode":"raw","raw":"{\"customerId\":\"{{customerId}}\",\"items\":[{\"productId\":\"{{productId}}\",\"quantity\":2}]}"},"url":"{{baseUrl}}/challans"}},
+      {"name":"List","request":{"method":"GET","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":"{{baseUrl}}/challans?limit=20"}},
+      {"name":"Confirm","request":{"method":"POST","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":"{{baseUrl}}/challans/{{challanId}}/confirm"}},
+      {"name":"Cancel","request":{"method":"POST","header":[{"key":"Authorization","value":"Bearer {{token}}"}],"url":"{{baseUrl}}/challans/{{challanId}}/cancel"}}
+    ]}
+  ]
+}
