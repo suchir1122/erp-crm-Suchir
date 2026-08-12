@@ -1,0 +1,1 @@
+{"name":"erp-crm-suchir","private":true,"scripts":{"dev":"concurrently \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\"","build":"npm --prefix backend run build && npm --prefix frontend run build"},"devDependencies":{"concurrently":"^9.0.0"}}
